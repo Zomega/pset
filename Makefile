@@ -3,16 +3,23 @@ LATEX_OBJS = $(wildcard *.tex)
 %.pdf: %.tex
 	pdflatex $<
 
-all: precheck $(patsubst %.tex,%.pdf,$(LATEX_OBJS)) clean check
+init:
+	@echo "TODO Need to do setup/config here ..."
 
-precheck:
-	@echo "Doing Precheck?"
+init-sample:
+	@echo "Populating with sample pset from ./.sample/"
+	@cp .sample/* .
+
+all: $(patsubst %.tex,%.pdf,$(LATEX_OBJS)) clean check
 
 clean:
 	@echo "\nCleaning up!"
 	@rm *.log
 	@rm *.aux
 	@echo ""
+
+distclean:
+	git stash save "Automatic make distclean stash."
 
 check:
 	@echo "\nWarnings."
