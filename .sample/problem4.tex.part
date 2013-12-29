@@ -1,0 +1,64 @@
+I will define my family of hashes as
+
+\[ h_{(a,b,c)}(q) = \left[ \left[ \left(aq^2+bq+c\right) \left(\text{mod }p\right) \right] \left(\text{mod }m\right) \right] \]
+
+Where $a$ is an integer picked uniformly from the interval $2$ to $p$, $b$ is an integer picked uniformly from $1$ to $p$, and $c$ is picked uniformly from positive integers less than or equal $p$. Notice that this gives us $p(p-1)(p-2)$ choices for $(a,b,c)$, so my family of hashs has $O(p^3)$ members.
+
+Let us fix randomly selected but distinct $x,y,z < p$, $x,y,z \geq 0$. I define
+
+\[ r \equiv \left(ax^2+bx+c\right) \left(\text{mod }p\right) \]
+\[ s \equiv \left(ay^2+by+c\right) \left(\text{mod }p\right) \]
+\[ t \equiv \left(az^2+bz+c\right) \left(\text{mod }p\right) \]
+
+I will first prove that there are no triple collisions among $r$, $s$, and $t$, i.e. never is $r \equiv s \equiv t$.
+
+For the sake of contradiction, suppose $r \equiv s \equiv t$. Without loss of generality, $r \equiv s$ implies $r-s \equiv 0$
+
+\[ 0 \equiv a( x^2 - y^2 ) + b( x - y ) \equiv ( x - y )(a(x+y)+b)\]
+
+Note that this implies that $x+y \equiv -a^{-1}b$ since $x$ and $y$ are distinct. An analogous argument implies $x+z \equiv -a^{-1}b$. Therefore $y-z \equiv 0$, implying $y$ and $z$ are not distinct, a contradiction, so our initial assumption ($r \equiv s \equiv t$) is impossible.
+
+I will now establish that $x,y,z$ uniquely determines $r,s,t$ to equivalence this will imply uniformity of $r,s,t$ in analogy to the CLRS proof.
+
+\[ \left[ \begin{array}{ccc}
+x^2 & x & 1 \\
+y^2 & y & 1 \\
+z^2 & z & 1 \\
+\end{array} \right]
+\cdot
+\left[ \begin{array}{c}
+x \\
+y \\
+z \\
+\end{array} \right]
+\equiv
+\left[ \begin{array}{c}
+r \\
+s \\
+t \\
+\end{array} \right]
+\left(\text{mod }p\right) \]
+
+To establish the existence of unique solutions here, we need to demonstrate the matrix is invertible $\left(\text{mod }p\right)$. This can be done by showing that it's determinant is nonzero $\left(\text{mod }p\right)$.
+
+\[ \text{det}\left[ \begin{array}{ccc}
+x^2 & x & 1 \\
+y^2 & y & 1 \\
+z^2 & z & 1 \\
+\end{array} \right]\left(\text{mod }p\right)\]
+
+\[-(x-y)(y-z)(z-x) \left(\text{mod }p\right)\]
+
+Notice that this must be nonzero because each of the individual terms is nonzero and has magnitude less than $p$.
+
+Since we have uniqueness, as per CLRS we may infer uniformity of $r,s,t$ from the uniformity of $a,b,c$.
+
+Now we have the tools we need to prove the original statement is true of this family of hashes.
+
+Note that $ h_{(a,b,c)}(x) = \left[ r \left(\text{mod }m\right) \right] $ and so forth. Therefore, we may only have a triple collision if distinct (and uniform) $r,s,t$ all collide under $\left(\text{mod }m\right)$.
+
+Again, I will draw upon CLRS to bound the probability of this event as less than
+
+\[P \leq \frac{1}{m}\frac{1}{m-1}\]
+
+So the probability of a three way collision is $O\left(\frac{1}{m^2}\right)$.

@@ -1,0 +1,53 @@
+\documentclass{article}
+
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{listings}
+
+\newcommand{\code}[2]{
+    \vspace{2em}
+    \begin{center}
+        \hrulefill
+        \textbf{\hspace{5 mm}\emph{#1}\hspace{5 mm}}
+        \hrulefill
+    \end{center}
+    \lstinputlisting{#2}
+    \hrulefill
+    \vspace{2em}
+}
+
+\lstset{
+  language=Python,
+  showstringspaces=false,
+  formfeed=\newpage,
+  tabsize=4,
+  commentstyle=\itshape,
+  basicstyle=\ttfamily,
+  morekeywords={models, lambda, forms}
+}
+
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+
+\title{ 6.046 Pset 5 }
+\date{ \today }
+\author{Will Oursler ( woursler@mit.edu ) \\ consulted with: Sayeed Tasnim }
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+\item \input{problem1.tex.part}
+\item \input{problem2.tex.part}
+\item \input{problem3.tex.part}
+\item \input{problem4.tex.part}
+
+\end{enumerate}
+
+\end{document}

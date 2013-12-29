@@ -1,0 +1,98 @@
+\begin{enumerate}[(a)]
+\item I will prove this with induction on $k$. Let $d^{(k)}$ be the size of the max-clique in $G^{(k)}$.
+
+Notice that there is at least one max-clique of $c$ elements in $G$. I'll refer to this as $C$.
+
+Note that because $G^{(1)}$ is trivially isomorphic to $G$, $d^{(1)} = c^1$.
+
+Now suppose that $d^{(k-1)} = c^{k-1}$. We know that there exists at least one set of $c^{k-1}$ tuples $t_i$ in $V[G^{(k-1)}]$ such that there is an edge between every pair $t_i$ and $t_j$. We also know that there is no larger set of such tuples. Let $t_i,v_n$ denote the size $k$ tuple that starts with $t_i$ and has $v_n$ appended. Note that if $v_n$ and $v_m$ are (not necessarily distinct) elements of $C$ then for each distinct $t_i$ and $t_j$ there is an edge in $G^{(k)}$ between $t_i,v_n$ and $t_j,v_m$. This implies a set of $c^{k-1} \cdot c = c^k$ elements of $G^{(k)}$ with edges between each pair, which means $d^{(k)} \geq c^{k}$. This becomes an exact equality because we may note that for $t_i,v_n$ and $t_j,v_m$ to have an edge in match $G^{(k)}$, each of their constituent parts must match in the appropriate graph.
+
+Therefore by induction $d = c^k$.
+
+\item I will prove that if we are given a polynomial time approximation algorithm with a constant factor, we can use it to construct a polynomial time exact algorithm for max-clique. Assuming $P\neq NP$, this is a contradiction, indicating that our assumption of being able to receive a approximation algorithm with a constant factor was flawed. To do this, I need to make some quick definitions and lemmas.
+
+\section{Setup}
+
+\subsection{Definition of $\epsilon$-approximation}
+
+I say an algorithm $A$ is an $\epsilon$-approximation (constant factor approximation) of $c(G)$ for $\epsilon > 1$ if for every input $G$, the final output $A(G)$ obeys
+
+\[ A(G) \leq c(G) \leq \epsilon \cdot A(G) \]
+
+This definition is made primarily for convenience, and doesn't actually change the set of algorithms we consider to be constant factor approximations.
+
+\subsection{Lemma: Cases where $A$ gives the exact solution}
+
+Suppose both $c(G)$ and $A(G)$ are integers, $c(G) > 1$, and $A$ is an $\epsilon$-approximation of $c(G)$. Further, suppose
+
+\[ c(G) > \epsilon \cdot \left( c(G) - 1 \right) \]
+
+Then $A(G)=c(G)$.
+
+\subsubsection{Proof}
+
+Because $A$ is an $\epsilon$-approximation, we know both
+
+\[ A(G) \leq c(G) \]
+
+and
+
+\[ c(G) \leq \epsilon \cdot A(G) \]
+
+We are given in the statement that 
+
+\[ c(G) > \epsilon \cdot \left( c(G) - 1 \right) \]
+
+So $A(G) > c(G) - 1$. Since $A(G)$ is an integer, this implies that $A(G)=c(G)$. QED.
+
+\section{Contradiction Proof}
+
+For the purpose of contradiction, we presume to have some polynomial time (in $|V[G]|$) $\epsilon$-approximation $A(G)$. For a given integer $k\geq1$, I will construct an even better $\sqrt[k]{\epsilon}$-approximation $A^{(k)}(G)$ that still runs in polynomial time. I claim $A^{(k)}(G) = \left\lceil \sqrt[k]{A(G^{(k)})} \right\rceil$.
+
+\subsection{Approximate Correctness of $A^{(k)}$}
+
+We can run $A$ on $G^{(k)}$. From this we infer that
+
+\[ A(G^{(k)}) \leq c(G^{(k)}) \leq \epsilon \cdot A(G^{(k)}) \]
+
+By part (a), we note $c(G^{(k)}) = c(G)^k$. Also note that $\sqrt[k]{x}$ is increasing in $x$, so
+
+\[ \sqrt[k]{A(G^{(k)})} \leq c(G) \leq \sqrt[k]{\epsilon} \cdot \sqrt[k]{A(G^{(k)})}  \leq \sqrt[k]{\epsilon} \cdot \left\lceil \sqrt[k]{A(G^{(k)})} \right\rceil \]
+
+Because $\lceil x \rceil$ is increasing in $x$,
+
+\[ A^{(k)}(G) \leq c(G) \leq \sqrt[k]{\epsilon} \cdot A^{(k)}(G) \]
+
+So $A^{(k)}(G)$ is an $\sqrt[k]{\epsilon}$-approximation.
+
+\subsection{Runtime of $A^{(k)}$}
+
+I claim that given a fixed $k$, we can compute $A^{(k)}(G)$ in time polynomial in $|V[G]|$. First, we must construct $G^{(k)}$. I claim this can be done in polynomial time primarily because $|V[G^{(k)}]|$ is itself polynomial in $|V[G]|$ and $V[G^{(k)}]$ is itself straightforward enough to construct.
+
+\[|V[G^{(k)}]| = \frac{|V[G]|!}{\left(|V[G]|-k\right)!} = |V[G]| \cdot \left(|V[G]|-1\right) \cdot \left(|V[G]|-2\right) \cdot \hdots \cdot \left(|V[G]|- k + 1\right) \]
+
+We can definitely determine if a particular edge is in $G^{(k)}$ in polynomial time, and there are only polynomially many such edges possible. Therefore the construction of $G^{(k)}$ can be done.
+
+We now need to call $A$ on $G^{(k)}$. This operation is fine because the composition of two polynomials is still polynomial.
+
+Finally, we need to post process the result $x$ by passing it through $\left\lceil \sqrt[k]{x} \right\rceil$. I'll claim (without proof) that this operation should be polynomial in $x$, and $x$ is bounded by $V[G^{(k)}]$, so we can again fall back on composition of polynomials.
+
+Therefore $A^{(k)}$ has runtime polynomial in $|V[G]|$.
+
+\subsection{Exactness of $A^{(k)}$ for sufficiently large $k$}
+
+I will show that for sufficiently large $k$ (the value of $k$ being fixed only by $\epsilon$), $A^{(k)}$ is exact. In order to do this, I will need to assume $c(G) \geq 3$. I claim this is not onerous to do as preprocessing. It is $O(V^3)$ to find a triangle in $G$ should one exist (in this case $c(G) \geq 3$). If a triangle doesn't exist, then we can trivially compute $c(G)$ by checking if the edge set of $G$ is empty.
+
+By Lemma 1.2, we know that $A^{(k)}$ is exact if $c(G) > \sqrt[k]{\epsilon} \cdot \left( c(G) - 1 \right)$. Some rearranging gives
+
+\[\frac{\sqrt[k]{\epsilon}}{\sqrt[k]{\epsilon} - 1} > c(G) \geq 3\]
+
+\[ \sqrt[k]{\epsilon} < \frac{3}{2} \]
+
+and finally
+
+\[ k > \frac{\log\epsilon}{\log3-\log2} \]
+
+Thus, given any $\epsilon$-approximation, we can describe a polynomial time exact solution. Unless $P=NP$, this contradicts our assumption that we can receive an $\epsilon$-approximation because MAX-CLIQUE is NP-Complete. QED. 
+
+\end{enumerate}

@@ -1,0 +1,23 @@
+I want to avoid using $d$ as the number of districts because it can be confused with a distance metric. I will instead say there we desire to create $k$ districts.
+
+For brevity, define
+
+\[ D( p, S ) = \min_{s\in S} d(p,s) \]
+
+Recursively a ``sequence of capitols starting with $c_1$'' as follows ( Let $C_i$ be the set of all capitols with index less than or equal $i$)
+
+\[ c_{i+1} = \argmax_{p\in P} D(p,C_i)\]
+
+Note that the rest of this proof can be completed picking any $c_1$ without loss of generality, as is the case with any ties in the capitol sequence. Any valid capitol sequence will complete this proof, and any such sequence can be used in the approximation algorithm proposed. For here on, I will implicitly assume that we have picked a specific capitol sequence to use and not concern myself with the exact method used to pick $c_1$ or break ties.
+
+Note that by the pigeonhole principal, $c_{k+1}$ is assigned to the same district as some $c_j \in C_k$ in the optimal districting. This lower-bounds the minimum possible width of the optimal partition ($w$) as $w \geq d(c_j, c_{k+1})$.
+
+Now consider the following approximate partitioning: assign each planet $p$ to district $m$ if it is closest to $c_m$ among the elements of $C_k$.
+
+$c_{k+1}$ is assigned to some district $l$ corresponding to $c_l$. Because $c_{k+1}$  is assigned to the capitol closest it $d(c_j, c_{k+1}) \geq d(c_l, c_{k+1})$.
+
+Notice that $d(c_l, c_{k+1})$ is the largest distance between the capitol of any district and any planet in that district by virtue of the fact that $c_{k+1} = \argmax_{p\in P} D(p,C_k)$. As a result, we can bound the width of our approximate districting ($w'$) as $w'\leq 2\cdot d(c_l, c_{k+1})$.
+
+\[ w'\leq 2\cdot d(c_j, c_{k+1}) \leq 2 \cdot w\]
+
+Since we have proved that $w' \leq 2 w$, the approximate districting described above fits our needs. Indeed, we can generate the first $k$ terms of a capitol sequence in polynomial time without too much cleverness, and once we have this sequence we can create the districts in $O(kn)$ time.

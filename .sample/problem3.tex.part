@@ -1,0 +1,5 @@
+Alyssa should rent the server until she has spent \$5000 on rental fees. At this point, if she still needs the server the next month, she should buy it outright.
+
+We can prove this works as follows: Suppose the minimum possible cost $c$ is less than \$5000. Since it costs \$5000 to buy the server, we know that this means we would be better off renting for the duration. Our strategy would have us rent past cost $c$, so we will actually meet the optimal cost in this scenario.
+
+Now suppose the minimum cost $c$ is greater than or equal \$5000\footnote{Since we can always purchase, it is clear that $c=\$5000$ in this case.}. Notice that the most our strategy will ever have us spend is \$10000 (\$5000 in rental fees followed by \$5000 to buy the server), so we achieve acceptable performance in this case as well.
