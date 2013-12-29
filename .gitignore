@@ -2,6 +2,9 @@
 *~
 *.save
 
+# Python
+*.pyc
+
 # LaTeX temp files.
 *.acn
 *.acr
