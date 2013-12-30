@@ -1,5 +1,7 @@
 LATEX_OBJS = $(wildcard *.tex)
 
+all: $(patsubst %.tex,%.pdf,$(LATEX_OBJS)) clean check
+
 %.pdf: %.tex
 	pdflatex $<
 
@@ -11,9 +13,7 @@ init:
 
 init-sample:
 	cp .sample/* .
-	@echo "\n\033[1mThe repo has been populated with sample content from .sample/\033[0m\n"
-
-all: $(patsubst %.tex,%.pdf,$(LATEX_OBJS)) clean check
+	@echo "\n\033[1mThe repo has been populated with sample content from ./.sample/\033[0m\n"
 
 clean:
 	git clean -fdX

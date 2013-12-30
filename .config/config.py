@@ -56,9 +56,35 @@ def iterate_over_topology( topology ):
 def subpart_filename( subpart ):
 	return 'problem' + ''.join([ '.' + format_index( subpart[ depth ], depth ) for depth in range( len( subpart ) ) ]) + '.tex.part'
 
+def subtopology( subpart, topology ):
+	if len( subpart ) == 0:
+		return topology
+	assert subpart[0] < len( topology )
+	return subtopology( subpart[1:], topology[ subpart[0] ] )
+
+def immediate_subpart_files( subpart, topology ):
+	for index in range( len( subtopology( subpart, topology ) ) ):
+		yield subpart_filename( subpart + [ index ] )
+
+from template import texenv
+
 #prompt_subformats()
 topology = prompt_pset()
+
+# Create final files.
+texpart_template = texenv.get_template('subproblems.tex')
+pdf_base_template = texenv.get_template('pdf_base.tex')
+
+# Create all the .tex.part files, one for each subpart.
 for subpart in iterate_over_topology( topology ):
 	if subpart == []:
 		continue
-	print format_subpart( subpart ), subpart_filename( subpart )
+	with open( subpart_filename( subpart ), "wb") as f:
+		f.write( texpart_template.render( immediate_subpart_files = list( immediate_subpart_files( subpart, topology ) ) ) )
+
+# Create a document containing all the problems...
+with open( 'pset.tex', "wb" ) as f:
+	f.write( pdf_base_template.render(
+		title = "TITLE",
+		content = texpart_template.render( immediate_subpart_files = list( immediate_subpart_files( [], topology )))
+	))
