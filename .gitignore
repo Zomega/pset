@@ -2,7 +2,7 @@
 *~
 *.save
 
-# Python
+# Compiled Python and the like.
 *.pyc
 
 # LaTeX temp files.

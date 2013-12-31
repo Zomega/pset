@@ -1,7 +1,7 @@
 # The original code for this file is
 # http://code.activestate.com/recipes/81611-roman-numerals/
 # This code isn't very neat, and I'm not convinced it's even
-# totally correct, but it's a solid start.
+# totally correct (int_to_roman seems hacky), but it's a solid start.
 
 def int_to_roman(input):
 	if type(input) != type(1):
